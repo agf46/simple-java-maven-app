@@ -13,7 +13,7 @@ pipeline {
                     echo ‘CMD ["/bin/echo", "HELLO WORLD...."]' >> Dockerfile
                 '''
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'agf46') {
+                    docker.withRegistry('', registryCredential) {
                         def image = docker.build('agf46/demo')
                         image.push()
                     }
