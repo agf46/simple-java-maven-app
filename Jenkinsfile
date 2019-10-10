@@ -1,4 +1,9 @@
 pipeline {
+     environment {
+            registry = "docker.io/agf46/demo"
+            registryCredential = 'Docker Hub account'
+            dockerImage = ' '
+        }
     agent any
     stages {
         stage('build') {
