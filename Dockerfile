@@ -1,7 +1,5 @@
 FROM tutum/lamp
 
-MAINTAINER agf46
-
 ENV Version 1.9
 RUN rm -rf /app && \
     apt-get update && \
