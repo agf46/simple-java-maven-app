@@ -1,31 +1,32 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
-        stage('Build') {
+        stage('build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
- /*       stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                sh'''
+                    echo 'FROM alpine:latest’ > Dockerfile
+                    echo ‘CMD ["/bin/echo", "HELLO WORLD...."]' >> Dockerfile
+                '''
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'agf46') {
+                        def image = docker.build('agf46/demo')
+                        image.push()
+                    }
                 }
             }
         }
-        stage('Deliver') {
+        stage('analyze') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                sh 'echo "docker.io/agf46/demo `pwd`/Dockerfile" > anchore_images'
+                anchore name: 'anchore_images'
             }
         }
-    } */
-} 
+        stage('teardown') {
+            steps {
+                sh'''
+                    for i in `cat anchore_images | awk '{print $1}'`;do docker rmi $i; done
+                '''
+            }
+        }
+    }
 }
