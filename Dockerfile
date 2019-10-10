@@ -6,7 +6,7 @@ RUN rm -rf /app && \
     apt-get install -y wget php5-gd && \
     rm -rf /var/lib/apt/lists/*
 
-COPY conf/* /tmp/
+#COPY conf/* /tmp/
 
 RUN wget https://github.com/ethicalhack3r/DVWA/archive/v${VERSION}.tar.gz && \
     tar xvf /v${VERSION}.tar.gz && \
