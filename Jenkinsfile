@@ -21,7 +21,7 @@ pipeline {
            }
            stage('Container Security Scan') {
                steps{
-                   sh 'echo "docker.io/agf46/demo `pwd` /Dockerfile" > anchore_images'
+                   sh 'echo "hub.docker.com/r/agf46/demo `pwd` /Dockerfile" > anchore_images'
                    anchore name: 'anchore_images'
                }
            }
